@@ -14,12 +14,12 @@ class AuthController extends Controller
 {
     public function signin(Request $request)
     {
-        
+
         try {
-            $code = rand(1000, 9999);  
+            $code = rand(1000, 9999);
             $codeStr = (string) $code;
             Mail::to($request->email)->send(
-                new TestEmail("" , $codeStr)
+                new TestEmail("", $codeStr)
             );
 
             return response()->json([
@@ -36,8 +36,9 @@ class AuthController extends Controller
         }
     }
 
-    public function verification(Request $request){
-        if($request){
+    public function verification(Request $request)
+    {
+        if ($request) {
             $tab = [
                 'adresse' => $request->address,
                 'code' => $request->code,
@@ -47,15 +48,18 @@ class AuthController extends Controller
                 'prenom' => $request->lastName,
                 'password' => $request->password,
             ];
-        $user = User::create($tab);
+            $user = User::create($tab);
         }
+        $token = $user->createToken($user->name);
+
         return response()->json([
+            'token' => $token->plainTextToken,
             'message' => 'Inscription réussi',
             'user' => $user
         ]);
     }
 
-     public function login(Request $request)
+    public function login(Request $request)
     {
         // return response()->json([
         //     'informations' => $request->all()
@@ -65,7 +69,7 @@ class AuthController extends Controller
             'email' => 'required|email',
             'password' => 'required'
         ]);
-        
+
 
         // Tentative de connexion
         if (!Auth::attempt($request->only('email', 'password'))) {
@@ -74,14 +78,27 @@ class AuthController extends Controller
             ], 401);
         }
 
+
         // Récupérer l’utilisateur connecté
         $user = Auth::user();
-
-        // Générer un token (Sanctum)
+        $token = $user->createToken($user->name);
 
         return response()->json([
+            'token' => $token->plainTextToken,
             'message' => 'Connexion réussie ✅',
             'user' => $user,
+        ]);
+    }
+
+    public function logout(Request $request)
+    {
+        // Récupérer l’utilisateur connecté
+        $user = Auth::user();
+        // Révoquer tous les tokens de l’utilisateur
+        $user->tokens()->delete();
+
+        return response()->json([
+            'message' => 'Déconnexion réussie ✅'
         ]);
     }
 }
