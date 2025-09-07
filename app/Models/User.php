@@ -55,4 +55,16 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function publications()
+    {
+        return $this->hasMany(Publication::class, 'id_user');
+    }
+    public function commentaires()
+    {
+        return $this->hasMany(Commentaire::class, 'id_user');
+    }
+    public function reactions()
+    {
+        return $this->hasMany(Reaction::class, 'id_user');
+    }
 }

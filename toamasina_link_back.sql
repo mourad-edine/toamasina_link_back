@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost
--- Généré le : sam. 30 août 2025 à 11:59
+-- Généré le : dim. 07 sep. 2025 à 07:51
 -- Version du serveur : 8.0.34
 -- Version de PHP : 8.2.17
 
@@ -33,7 +33,7 @@ CREATE TABLE `amis` (
   `id_user2` int NOT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -73,15 +73,15 @@ CREATE TABLE `commentaires` (
   `id_commentaire` int DEFAULT NULL,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `commentaires`
 --
 
 INSERT INTO `commentaires` (`id`, `id_user`, `id_publication`, `contenu`, `id_commentaire`, `created_at`, `updated_at`) VALUES
-(1, 1, 2, 'voici mon premier commentaire', NULL, '2025-08-23 14:31:29', '2025-08-23 14:31:29'),
-(2, 1, 2, 'voici le second commentaire', NULL, '2025-08-23 14:31:29', '2025-08-23 14:31:29');
+(2, 1, 2, 'voici le second commentaire', NULL, '2025-08-23 14:31:29', '2025-08-23 14:31:29'),
+(3, 1, 1, 'je suis le nouveau contenu du commentaire', NULL, '2025-09-07 07:48:54', '2025-09-07 07:48:54');
 
 -- --------------------------------------------------------
 
@@ -148,7 +148,7 @@ CREATE TABLE `messages` (
   `reaction` int DEFAULT NULL,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -186,7 +186,7 @@ CREATE TABLE `notifications` (
   `contenu` varchar(255) DEFAULT NULL,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `notifications`
@@ -237,17 +237,42 @@ CREATE TABLE `publications` (
   `id_user` bigint UNSIGNED DEFAULT NULL,
   `images` varchar(100) DEFAULT NULL,
   `description` int DEFAULT NULL,
+  `location` varchar(150) DEFAULT NULL,
+  `times` varchar(10) DEFAULT NULL,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `publications`
 --
 
-INSERT INTO `publications` (`id`, `id_user`, `images`, `description`, `created_at`, `updated_at`) VALUES
-(1, 1, 'pas d\'image', NULL, '2025-08-23 14:06:04', '2025-08-23 14:06:04'),
-(2, 1, 'pas d\'image 2', NULL, '2025-08-23 14:06:21', '2025-08-23 14:06:21');
+INSERT INTO `publications` (`id`, `id_user`, `images`, `description`, `location`, `times`, `created_at`, `updated_at`) VALUES
+(1, 1, 'pas d\'image', NULL, NULL, NULL, '2025-08-23 14:06:04', '2025-08-23 14:06:04'),
+(2, 1, 'pas d\'image 2', NULL, NULL, NULL, '2025-08-23 14:06:21', '2025-08-23 14:06:21');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `reactions`
+--
+
+CREATE TABLE `reactions` (
+  `id` int NOT NULL,
+  `id_user` bigint UNSIGNED DEFAULT NULL,
+  `id_publication` int DEFAULT NULL,
+  `type` varchar(10) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `reactions`
+--
+
+INSERT INTO `reactions` (`id`, `id_user`, `id_publication`, `type`, `created_at`, `updated_at`) VALUES
+(5, 1, 1, 'like', '2025-09-07 04:36:10', '2025-09-07 04:36:10'),
+(6, 1, 1, 'like', '2025-09-07 04:44:04', '2025-09-07 04:44:04');
 
 -- --------------------------------------------------------
 
@@ -269,7 +294,8 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('kGbqbSZGq2RhptHeqAGvqOrzkUcfX0spiNAUGKsX', NULL, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiTkVWbFBqT2lMckJVeVdFVU1UUmgwc3BZUVZyd2ZYOEQ1UkpSQmJxQyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDM6Imh0dHA6Ly9sb2NhbGhvc3QvdG9hbWFzaW5hLWxpbmstYmFjay9wdWJsaWMiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19', 1755197653);
+('kGbqbSZGq2RhptHeqAGvqOrzkUcfX0spiNAUGKsX', NULL, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiTkVWbFBqT2lMckJVeVdFVU1UUmgwc3BZUVZyd2ZYOEQ1UkpSQmJxQyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDM6Imh0dHA6Ly9sb2NhbGhvc3QvdG9hbWFzaW5hLWxpbmstYmFjay9wdWJsaWMiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19', 1755197653),
+('YSTW6BWSDyaaim3Qft6dkFxyQNoBiLQ0VebjYOhe', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiNzg1d1Q4RnM4RTNSOW9WQ3JkejZERzRLYWwwYkszTFNyS0Z3SkxkQSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1757100239);
 
 -- --------------------------------------------------------
 
@@ -398,6 +424,14 @@ ALTER TABLE `publications`
   ADD KEY `id_user` (`id_user`);
 
 --
+-- Index pour la table `reactions`
+--
+ALTER TABLE `reactions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_publication` (`id_publication`),
+  ADD KEY `id_user` (`id_user`);
+
+--
 -- Index pour la table `sessions`
 --
 ALTER TABLE `sessions`
@@ -426,7 +460,7 @@ ALTER TABLE `amis`
 -- AUTO_INCREMENT pour la table `commentaires`
 --
 ALTER TABLE `commentaires`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pour la table `failed_jobs`
@@ -462,13 +496,19 @@ ALTER TABLE `notifications`
 -- AUTO_INCREMENT pour la table `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT pour la table `publications`
 --
 ALTER TABLE `publications`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT pour la table `reactions`
+--
+ALTER TABLE `reactions`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT pour la table `users`
@@ -501,6 +541,13 @@ ALTER TABLE `notifications`
 --
 ALTER TABLE `publications`
   ADD CONSTRAINT `publications_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+--
+-- Contraintes pour la table `reactions`
+--
+ALTER TABLE `reactions`
+  ADD CONSTRAINT `reactions_ibfk_1` FOREIGN KEY (`id_publication`) REFERENCES `publications` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `reactions_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -15,10 +15,10 @@ class UtilisateurController extends Controller
         ];
     }
 
-    public function login(Request $request){
-        //dd($request->all());
-        return response()->json([
-            'informations' => $request->all()
-        ]);
+    public function getUserById($id)
+    {
+        return [
+            'utilisateur' => User::where('id', $id)->first()
+        ];
     }
 }
